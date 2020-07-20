@@ -31,12 +31,12 @@ import random
 kinesis = boto3.client('kinesis')
 
 def getHighHeartRate():
-    data = {}
-    data['Col_A'] = 'a'
-    data['Col_B'] = 'b'
-    data['Col_C'] = 'c'
-    data['Col_E_Unstructured'] = 'x,y,z'
-    return data
+    return {
+        'Col_A': 'a',
+        'Col_B': 'b',
+        'Col_C': 'c',
+        'Col_E_Unstructured': 'x,y,z',
+    }
 
 while True:
         data = json.dumps(getHighHeartRate())

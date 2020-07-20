@@ -30,9 +30,7 @@ import random
 
 kinesis = boto3.client('kinesis')
 def getReferrer():
-    data = {}
-    data['REFERRER'] = 'http://www.amazon.com'
-    return data
+    return {'REFERRER': 'http://www.amazon.com'}
 
 while True:
         data = json.dumps(getReferrer())

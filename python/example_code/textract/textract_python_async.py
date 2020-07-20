@@ -46,7 +46,7 @@ class DocumentProcessor:
  
     def ProcessDocument(self,type):
         jobFound = False
-        
+
         self.processType=type
         validType=False
 
@@ -57,7 +57,7 @@ class DocumentProcessor:
             print('Processing type: Detection')
             validType=True        
 
-        
+
         if self.processType==ProcessType.ANALYSIS:
             response = self.textract.start_document_analysis(DocumentLocation={'S3Object': {'Bucket': self.bucket, 'Name': self.document}},
                 FeatureTypes=["TABLES", "FORMS"],
@@ -65,13 +65,13 @@ class DocumentProcessor:
             print('Processing type: Analysis')
             validType=True    
 
-        if validType==False:
+        if not validType:
             print("Invalid processing type. Choose Detection or Analysis.")
             return
 
         print('Start Job Id: ' + response['JobId'])
         dotLine=0
-        while jobFound == False:
+        while not jobFound:
             sqsResponse = self.sqs.receive_message(QueueUrl=self.sqsQueueUrl, MessageAttributeNames=['ALL'],
                                           MaxNumberOfMessages=10)
 
@@ -80,10 +80,10 @@ class DocumentProcessor:
                 if 'Messages' not in sqsResponse:
                     if dotLine<40:
                         print('.', end='')
-                        dotLine=dotLine+1
+                        dotLine += 1
                     else:
                         print()
-                        dotLine=0    
+                        dotLine=0
                     sys.stdout.flush()
                     time.sleep(5)
                     continue
@@ -209,32 +209,32 @@ class DocumentProcessor:
         paginationToken = None
         finished = False
 
-        while finished == False:
+        while not finished:
 
             response=None
 
             if self.processType==ProcessType.ANALYSIS:
-                if paginationToken==None:
+                if paginationToken is None:
                     response = self.textract.get_document_analysis(JobId=jobId,
                         MaxResults=maxResults)
-                else: 
+                else:
                     response = self.textract.get_document_analysis(JobId=jobId,
                         MaxResults=maxResults,
                         NextToken=paginationToken)                           
 
             if self.processType==ProcessType.DETECTION:
-                if paginationToken==None:
+                if paginationToken is None:
                     response = self.textract.get_document_text_detection(JobId=jobId,
                         MaxResults=maxResults)
-                else: 
+                else:
                     response = self.textract.get_document_text_detection(JobId=jobId,
                         MaxResults=maxResults,
                         NextToken=paginationToken)   
 
-            blocks=response['Blocks'] 
+            blocks=response['Blocks']
             print ('Detected Document Text')
             print ('Pages: {}'.format(response['DocumentMetadata']['Pages']))
-        
+
             # Display block information
             for block in blocks:
                     self.DisplayBlockInfo(block)
@@ -251,17 +251,17 @@ class DocumentProcessor:
         paginationToken = None
         finished = False
 
-        while finished == False:
+        while not finished:
 
             response=None
-            if paginationToken==None:
+            if paginationToken is None:
                 response = self.textract.get_document_analysis(JobId=jobId,
                                             MaxResults=maxResults)
             else: 
                 response = self.textract.get_document_analysis(JobId=jobId,
                                             MaxResults=maxResults,
                                             NextToken=paginationToken)  
-            
+
 
             #Get the text blocks
             blocks=response['Blocks']

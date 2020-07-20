@@ -51,7 +51,7 @@ params = {
     'TableName': table_name
 }
 start = time.time()
-for i in range(iterations):
+for _ in range(iterations):
     result = client.scan(**params)
 
 end = time.time()

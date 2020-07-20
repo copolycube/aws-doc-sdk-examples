@@ -137,7 +137,7 @@ myAWSIoTMQTTClient.onMessage = customOnMessage
 
 # Connect and subscribe to AWS IoT
 myAWSIoTMQTTClient.connect()
-if args.mode == 'both' or args.mode == 'subscribe':
+if args.mode in ['both', 'subscribe']:
     myAWSIoTMQTTClient.subscribe(thingName + "/capture", 0, customCallback)
 time.sleep(2)
 

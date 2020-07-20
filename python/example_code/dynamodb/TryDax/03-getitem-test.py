@@ -50,7 +50,7 @@ sk = 10
 iterations = 50
 
 start = time.time()
-for i in range(iterations):
+for _ in range(iterations):
     for ipk in range(1, pk+1):
         for isk in range(1, sk+1):
             params = {

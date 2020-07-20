@@ -116,7 +116,7 @@ myAWSIoTMQTTClient.configureMQTTOperationTimeout(5)  # 5 sec
 
 # Connect and subscribe to AWS IoT
 myAWSIoTMQTTClient.connect()
-if args.mode == 'both' or args.mode == 'subscribe':
+if args.mode in ['both', 'subscribe']:
     myAWSIoTMQTTClient.subscribe(topic, 0, customCallback)
 time.sleep(2)
 
@@ -125,9 +125,8 @@ topic = thingName + "/motion"
 # Publish to the same topic in a loop forever
 loopCount = 0
 while True:
-    if args.mode == 'both' or args.mode == 'publish':
-        message = {}
-        message['isMotionDetected'] = args.message
+    if args.mode in ['both', 'publish']:
+        message = {'isMotionDetected': args.message}
         messageJson = json.dumps(message)
         myAWSIoTMQTTClient.publish(topic, messageJson, 0)
         if args.mode == 'publish':

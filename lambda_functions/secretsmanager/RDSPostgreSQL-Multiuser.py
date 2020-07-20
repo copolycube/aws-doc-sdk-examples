@@ -307,8 +307,15 @@ def get_connection(secret_dict):
 
     # Try to obtain a connection to the db
     try:
-        conn = pgdb.connect(host=secret_dict['host'], user=secret_dict['username'], password=secret_dict['password'], database=dbname, port=port, connect_timeout=5)
-        return conn
+        return pgdb.connect(
+            host=secret_dict['host'],
+            user=secret_dict['username'],
+            password=secret_dict['password'],
+            database=dbname,
+            port=port,
+            connect_timeout=5,
+        )
+
     except pg.InternalError:
         return None
 

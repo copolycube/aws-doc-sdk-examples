@@ -198,11 +198,9 @@ def set_secret(service_client, arn, token):
             # Set the user or login password (depending on database containment)
             if containment == 0:
                 alter_stmt = "ALTER LOGIN %s" % pending_dict['username']
-                cursor.execute(alter_stmt + " WITH PASSWORD = %s OLD_PASSWORD = %s", (pending_dict['password'], current_dict['password']))
             else:
                 alter_stmt = "ALTER USER %s" % pending_dict['username']
-                cursor.execute(alter_stmt + " WITH PASSWORD = %s OLD_PASSWORD = %s", (pending_dict['password'], current_dict['password']))
-
+            cursor.execute(alter_stmt + " WITH PASSWORD = %s OLD_PASSWORD = %s", (pending_dict['password'], current_dict['password']))
             conn.commit()
             logger.info("setSecret: Successfully set password for user %s in SQL Server DB for secret arn %s." % (pending_dict['username'], arn))
     finally:
@@ -300,14 +298,13 @@ def get_connection(secret_dict):
 
     # Try to obtain a connection to the db
     try:
-        conn = pymssql.connect(server=secret_dict['host'],
+        return pymssql.connect(server=secret_dict['host'],
                                user=secret_dict['username'],
                                password=secret_dict['password'],
                                database=dbname,
                                port=port,
                                login_timeout=5,
                                as_dict=True)
-        return conn
     except pymssql.OperationalError:
         return None
 

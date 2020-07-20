@@ -68,7 +68,7 @@ images = ["https://images-na.ssl-images-amazon.com/images/I/41iz5Tw82IL._AC_US21
 "https://images-na.ssl-images-amazon.com/images/I/41+K4pC74XL._AC_US218_.jpg"]
 
 
-if not args.certificatePath or not args.privateKeyPath:
+if not certificatePath or not privateKeyPath:
     parser.error("Missing credentials for authentication.")
     exit(2)
 

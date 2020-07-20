@@ -42,7 +42,7 @@ def getData():
 while True:
     data = json.dumps(getData())
     # Send six records, ten seconds apart, with the same event time and ticker
-    for x in range(0, 6):
+    for _ in range(6):
         print(data)
         kinesis.put_record(
                 StreamName="ExampleInputStream",

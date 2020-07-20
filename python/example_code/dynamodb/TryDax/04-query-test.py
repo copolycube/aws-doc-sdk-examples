@@ -60,7 +60,7 @@ params = {
     }
 }
 start = time.time()
-for i in range(iterations):
+for _ in range(iterations):
     result = client.query(**params)
 
 end = time.time()

@@ -128,7 +128,7 @@ class VideoDetect:
         paginationToken = ''
         finished = False
 
-        while finished == False:
+        while not finished:
             response = self.rek.get_label_detection(JobId=jobId,
                                             MaxResults=maxResults,
                                             NextToken=paginationToken,
@@ -173,7 +173,7 @@ class VideoDetect:
         paginationToken = ''
         finished = False
 
-        while finished == False:
+        while not finished:
             response = self.rek.get_person_tracking(JobId=jobId,
                                             MaxResults=maxResults,
                                             NextToken=paginationToken)
@@ -200,7 +200,7 @@ class VideoDetect:
         paginationToken = ''
         finished = False
 
-        while finished == False:
+        while not finished:
             response = self.rek.get_content_moderation(JobId=jobId,
                                                 MaxResults=maxResults,
                                                 NextToken=paginationToken)
@@ -233,7 +233,7 @@ class VideoDetect:
         paginationToken = ''
         finished = False
 
-        while finished == False:
+        while not finished:
             response = self.rek.get_face_detection(JobId=jobId,
                                             MaxResults=maxResults,
                                             NextToken=paginationToken)
@@ -263,7 +263,7 @@ class VideoDetect:
 
         finished = False
 
-        while finished == False:
+        while not finished:
             response = self.rek.get_face_search(JobId=jobId,
                                         MaxResults=maxResults,
                                         NextToken=paginationToken)
@@ -296,7 +296,7 @@ class VideoDetect:
         paginationToken = ''
         finished = False
 
-        while finished == False:
+        while not finished:
             response = self.rek.get_celebrity_recognition(JobId=jobId,
                                                     MaxResults=maxResults,
                                                     NextToken=paginationToken)

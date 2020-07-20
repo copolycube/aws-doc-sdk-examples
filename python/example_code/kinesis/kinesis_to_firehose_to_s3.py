@@ -155,7 +155,7 @@ def main():
     kinesis_client = boto3.client('kinesis')
     with open(test_data_file, 'rb') as f:
         logging.info('Putting 20 records into the Kinesis stream one at a time')
-        for i in range(20):
+        for _ in range(20):
             # Read a record of test data
             line = next(f)
 

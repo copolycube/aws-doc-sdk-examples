@@ -63,7 +63,7 @@ clientId = args.thingName
 thingName = args.thingName
 
 
-if not args.certificatePath or not args.privateKeyPath:
+if not certificatePath or not privateKeyPath:
     parser.error("Missing credentials for authentication.")
     exit(2)
 

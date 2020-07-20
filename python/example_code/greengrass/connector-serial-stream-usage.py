@@ -24,12 +24,11 @@ TOPIC_REQUEST = 'serial/CORE_THING_NAME/write/dev/serial1'
 iot_client = greengrasssdk.client('iot-data')
 
 def create_serial_stream_request():
-	request = {
+	return {
 		"data": "TEST",
 		"type": "ascii",
 		"id": "abc123"
 	}
-	return request
 
 def publish_basic_request():
 	iot_client.publish(payload=json.dumps(create_serial_stream_request()), topic=TOPIC_REQUEST)

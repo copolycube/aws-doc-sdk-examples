@@ -308,8 +308,18 @@ def get_connection(secret_dict):
 
     # Try to obtain a connection to the db
     try:
-        conn = cx_Oracle.connect(secret_dict['username'] + '/' + secret_dict['password'] + '@' + secret_dict['host'] + ':' + port + '/' + secret_dict['dbname'])
-        return conn
+        return cx_Oracle.connect(
+            secret_dict['username']
+            + '/'
+            + secret_dict['password']
+            + '@'
+            + secret_dict['host']
+            + ':'
+            + port
+            + '/'
+            + secret_dict['dbname']
+        )
+
     except (cx_Oracle.DatabaseError, cx_Oracle.OperationalError) :
         return None
 
