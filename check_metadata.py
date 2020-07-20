@@ -35,14 +35,14 @@ def checkFile(filePattern):
                 print("\nChecking File: " + filepath)
             with open(filepath) as f:
                 s = f.read()
-                
+
                 #Check for Deny List words in file
                 verifyNoDenyListWords(s, filepath)
-                
+
                 #Check for SecretKeys
                 characterScan(s, filepath)
                 fileNameCheck(filename, filepath)
-                
+
                 # Split file into list of strings separated by space
                 words = s.split()
             for word in words:
@@ -66,7 +66,7 @@ def checkFile(filePattern):
                 # Filter to only warning messages
                 errors = list(filter(None, errors))
                 # print out file name, if warnings found
-                if len(errors) > 0 and quiet == True:
+                if errors and quiet == True:
                     print("\nChecking File: " + filepath)
                 for error in errors:
                     if error:
@@ -100,10 +100,9 @@ def characterScan(fileContents, filelocation):
             
 def fileNameCheck(filename, filelocation):
     forty = re.findall("[^a-zA-Z0-9/+=][a-zA-Z0-9/+=]{40}[^a-zA-Z0-9/+=]", filename)
-    if (forty) :
-        if forty[0][-1] not in allowList:
-           print("ERROR -- " + forty[0][:-1] + " Found in " + filelocation)
-           sys.exit("ERROR -- Filename is 40 characters long, and should be renamed or added to allow list.")
+    if (forty) and forty[0][-1] not in allowList:
+        print("ERROR -- " + forty[0][:-1] + " Found in " + filelocation)
+        sys.exit("ERROR -- Filename is 40 characters long, and should be renamed or added to allow list.")
 
 def snippetStartCheck(words, filelocation):
     #print (words)
@@ -121,8 +120,8 @@ def snippetStartCheck(words, filelocation):
             else:
                 print("ERROR -- Found in " + filelocation)
                 sys.exit("ERROR -- " + s + "'s matching start tag not found.") 
-        
-    if len(snippetTags) > 0 : 
+
+    if snippetTags: 
         print("ERROR -- Found in " + filelocation)
         print(snippetTags)
         sys.exit("ERROR -- " + snippetTags.pop() + "'s matching end tag not found.")
@@ -130,23 +129,20 @@ def snippetStartCheck(words, filelocation):
 def snippetAuthorCheck(words):
     author = 'sourceauthor:['
     matching = [s for s in words if author in s]
-    if not matching:
-        if warn:
-            return "WARNING -- Missing snippet-sourceauthor:[Your Name]"
+    if not matching and warn:
+        return "WARNING -- Missing snippet-sourceauthor:[Your Name]"
 
 def snippetServiceCheck(words):
     service = 'service:['
     matching = [s for s in words if service in s]
-    if not matching:
-        if warn:
-            return "WARNING -- Missing snippet-service:[AWS service name] \nFind a list of AWS service names under AWS Service Namespaces in the General Reference Guide: https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html"
+    if not matching and warn:
+        return "WARNING -- Missing snippet-service:[AWS service name] \nFind a list of AWS service names under AWS Service Namespaces in the General Reference Guide: https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html"
 
 def snippetDescriptionCheck(words):
     desc = 'sourcedescription:['
     matching = [s for s in words if desc in s]
-    if not matching:
-        if warn:
-            return "WARNING -- Missing snippet-sourcedescription:[Filename demonstrates how to ... ]"
+    if not matching and warn:
+        return "WARNING -- Missing snippet-sourcedescription:[Filename demonstrates how to ... ]"
 
 def snippetTypeCheck(words):
     author = 'sourcetype:['
@@ -161,26 +157,23 @@ def snippetTypeCheck(words):
         elif match.startswith('sourcetype:[snippet'):
             containsType = True
             break
-    if not containsType:
-        if warn:
-            return "WARNING -- Missing snippet-sourcetype:[full-example] or snippet-sourcetype:[snippet]"
+    if not containsType and warn:
+        return "WARNING -- Missing snippet-sourcetype:[full-example] or snippet-sourcetype:[snippet]"
         
 
 def snippetDateCheck(words):
     datetag = 'sourcedate:['
     matching = [s for s in words if datetag in s]
-    if not matching:
-        if warn:
-            return "WARNING -- Missing snippet-sourcedate:[YYYY-MM-DD]"
+    if not matching and warn:
+        return "WARNING -- Missing snippet-sourcedate:[YYYY-MM-DD]"
 
 def snippetKeywordCheck(words):
     snippetkeyword = 'keyword:['
     matching = [s for s in words if snippetkeyword in s]
     # print(matching)
     codeSample = [s for s in words if 'keyword:[Code Sample]\n' in s]
-    if not codeSample:
-        if warn:
-            return "WARNING -- Missing snippet-keyword:[Code Sample]"
+    if not codeSample and warn:
+        return "WARNING -- Missing snippet-keyword:[Code Sample]"
     keywordServiceName(matching)
     keywordLanguageCheck(matching)
     keywordSDKCheck(matching)
@@ -195,9 +188,8 @@ def keywordServiceName(words):
     matching = [s for s in words if Amazon in s]
     if matching:
         containsServiceTag = True
-    if not containsServiceTag:
-        if warn:
-            return "WARNING -- Missing snippet-keyword:[FULL SERVICE NAME]"
+    if not containsServiceTag and warn:
+        return "WARNING -- Missing snippet-keyword:[FULL SERVICE NAME]"
 
 def keywordLanguageCheck(words):
     languages = ['C++', 'C', '.NET', 'Go', 'Java', 'JavaScript', 'PHP', 'Python', 'Ruby','TypeScript' ]
@@ -207,9 +199,8 @@ def keywordLanguageCheck(words):
         if languagekeyword:
             containsLanguageTag = True
             break
-    if not containsLanguageTag:
-        if warn:
-            return "WARNING -- Missing snippet-keyword:[Language] \nOptions include:" + ', '.join(languages)
+    if not containsLanguageTag and warn:
+        return "WARNING -- Missing snippet-keyword:[Language] \nOptions include:" + ', '.join(languages)
             
 
 def keywordSDKCheck(words):
@@ -220,9 +211,8 @@ def keywordSDKCheck(words):
         if sdkkeyword:
             containsSDKTag = True
             break
-    if not containsSDKTag:
-        if warn:
-            return "WARNING -- Missing snippet-keyword:[SDK Version used] \nOptions include:" + ', '.join(sdkVersions)
+    if not containsSDKTag and warn:
+        return "WARNING -- Missing snippet-keyword:[SDK Version used] \nOptions include:" + ', '.join(sdkVersions)
 
 # We allow two args:
 #     -w to suppress warnings

@@ -44,18 +44,18 @@ def ShowBoundingBoxPositions(imageHeight, imageWidth, box, rotation):
     if rotation == 'ROTATE_0':
         left = imageWidth * box['Left']
         top = imageHeight * box['Top']
-    
-    if rotation == 'ROTATE_90':
-        left = imageHeight * (1 - (box['Top'] + box['Height']))
-        top = imageWidth * box['Left']
 
-    if rotation == 'ROTATE_180':
+    elif rotation == 'ROTATE_180':
         left = imageWidth - (imageWidth * (box['Left'] + box['Width']))
         top = imageHeight * (1 - (box['Top'] + box['Height']))
 
-    if rotation == 'ROTATE_270':
+    elif rotation == 'ROTATE_270':
         left = imageHeight * box['Top']
         top = imageWidth * (1- box['Left'] - box['Width'] )
+
+    elif rotation == 'ROTATE_90':
+        left = imageHeight * (1 - (box['Top'] + box['Height']))
+        top = imageWidth * box['Left']
 
     print('Bounding box of face:')
     print(f'  Left: {round(left)}, Top: {round(top)}, '

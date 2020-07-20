@@ -81,11 +81,12 @@ def generate_ARN_for_resource(resourceId, isCluster):
  
 def applyArguments(argv):
 	""" Reads the supplied arguments and applies them """
-	settings = dict()
-	settings["regionName"] = ""
-	settings["clusterIdentifier"] = ""
-	settings["accountNumber"] = ""
-	settings["tags"] = ""
+	settings = {
+	    "regionName": "",
+	    "clusterIdentifier": "",
+	    "accountNumber": "",
+	    "tags": "",
+	}
 	if (len(settings) != len(argv) - 1):
 		raise Exception("Incorrect number of argumnets supplied. Expected ", settings.keys())
 	for pos,arg in enumerate(argv):
@@ -94,15 +95,15 @@ def applyArguments(argv):
 		a=arg.split('=')
 		if len(a) != 2:
 			raise Exception("Incorrect usage. Format argument=value ...")
-		if not a[0] in settings:
-			raise Exception("Argument  " + a[0] + " does not exist. Expected ", settings.keys())	
-		settings[a[0]] = a[1]	
+		if a[0] not in settings:
+			raise Exception("Argument  " + a[0] + " does not exist. Expected ", settings.keys())
+		settings[a[0]] = a[1]
 	for key, value in settings.items():
 		if value == "":
 			raise Exception("Missing value for argument " + key)
-	global regionName 
+	global regionName
 	regionName = settings["regionName"]
-	global clusterIdentifier 
+	global clusterIdentifier
 	clusterIdentifier = settings["clusterIdentifier"]
 	global accountNumber
 	accountNumber = settings["accountNumber"]

@@ -87,11 +87,13 @@ def get_text(result, blocks_map):
                     word = blocks_map[child_id]
                     if word['BlockType'] == 'WORD':
                         text += word['Text'] + ' '
-                    if word['BlockType'] == 'SELECTION_ELEMENT':
-                        if word['SelectionStatus'] == 'SELECTED':
-                            text += 'X '    
+                    if (
+                        word['BlockType'] == 'SELECTION_ELEMENT'
+                        and word['SelectionStatus'] == 'SELECTED'
+                    ):
+                        text += 'X '    
 
-                                
+
     return text
 
 

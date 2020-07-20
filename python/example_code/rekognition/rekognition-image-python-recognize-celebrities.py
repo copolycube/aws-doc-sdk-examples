@@ -33,13 +33,14 @@ import json
 if __name__ == "__main__":
     # Change photo to the path and filename of your image. 
     photo='moviestars.jpg'
-    
+
     client=boto3.client('rekognition')
 
     with open(photo, 'rb') as image:
         response = client.recognize_celebrities(Image={'Bytes': image.read()})
 
-    print('Detected faces for ' + photo)    
+    print('Detected faces for ' + photo)
+    print
     for celebrity in response['CelebrityFaces']:
         print ('Name: ' + celebrity['Name'])
         print ('Id: ' + celebrity['Id'])
@@ -49,6 +50,5 @@ if __name__ == "__main__":
         print ('Info')
         for url in celebrity['Urls']:
             print ('   ' + url)
-        print
 # snippet-end:[rekognition.python.rekognition-image-python-recognize-celebrities.complete]
         

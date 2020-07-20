@@ -76,10 +76,10 @@ def get_template(s3, artifact, file_in_zip):
     
     """
     tmp_file = tempfile.NamedTemporaryFile()
-    bucket = artifact['location']['s3Location']['bucketName']
-    key = artifact['location']['s3Location']['objectKey']
-    
     with tempfile.NamedTemporaryFile() as tmp_file:
+        bucket = artifact['location']['s3Location']['bucketName']
+        key = artifact['location']['s3Location']['objectKey']
+
         s3.download_file(bucket, key, tmp_file.name)
         with zipfile.ZipFile(tmp_file.name, 'r') as zip:
             return zip.read(file_in_zip)   

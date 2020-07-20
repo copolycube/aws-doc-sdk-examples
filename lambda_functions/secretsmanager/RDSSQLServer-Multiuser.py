@@ -312,14 +312,13 @@ def get_connection(secret_dict):
 
     # Try to obtain a connection to the db
     try:
-        conn = pymssql.connect(server=secret_dict['host'],
+        return pymssql.connect(server=secret_dict['host'],
                                user=secret_dict['username'],
                                password=secret_dict['password'],
                                database=dbname,
                                port=port,
                                login_timeout=5,
                                as_dict=True)
-        return conn
     except pymssql.OperationalError:
         return None
 

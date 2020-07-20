@@ -74,7 +74,7 @@ def greengrass_infinite_infer_run():
                    18 : 'sofa', 19 : 'train', 20 : 'tvmonitor' })
         results_thread = FIFO_Thread()
         results_thread.start()
-        
+
         # Send a starting message to the AWS IoT console.
         client.publish(topic=iotTopic, payload="Object detection starts now")
 
@@ -85,15 +85,16 @@ def greengrass_infinite_infer_run():
         ret, frame = awscam.getLastFrame()
         if ret == False:
             raise Exception("Failed to get frame from the stream")
-            
+
         yscale = float(frame.shape[0]/input_height)
         xscale = float(frame.shape[1]/input_width)
 
         doInfer = True
+        global jpeg
         while doInfer:
             # Get a frame from the video stream.
             ret, frame = awscam.getLastFrame()
-            
+
             # If you fail to get a frame, raise an exception.
             if ret == False:
                 raise Exception("Failed to get frame from the stream")
@@ -118,11 +119,10 @@ def greengrass_infinite_infer_run():
                     label_show = "{}:    {:.2f}%".format(outMap[obj['label']], obj['prob']*100 )
                     cv2.putText(frame, label_show, (xmin, ymin-15),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 165, 20), 4)
             label += '"null": 0.0'
-            label += '}' 
+            label += '}'
             client.publish(topic=iotTopic, payload = label)
-            global jpeg
             ret,jpeg = cv2.imencode('.jpg', frame)
-            
+
     except Exception as e:
         msg = "Test failed: " + str(e)
         client.publish(topic=iotTopic, payload=msg)

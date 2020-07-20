@@ -24,7 +24,7 @@ TOPIC_REQUEST = 'modbus/adapter/request'
 iot_client = greengrasssdk.client('iot-data')
 
 def create_read_coils_request():
-	request = {
+	return {
 		"request": {
 			"operation": "ReadCoilsRequest",
 			"device": 1,
@@ -33,7 +33,6 @@ def create_read_coils_request():
 		},
 		"id": "TestRequest"
 	}
-	return request
 
 def publish_basic_request():
 	iot_client.publish(payload=json.dumps(create_read_coils_request()), topic=TOPIC_REQUEST)

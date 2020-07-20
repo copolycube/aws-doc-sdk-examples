@@ -79,9 +79,7 @@ def iam_role_exists(iam_role_name):
     """
 
     # Try to retrieve information about the role
-    if get_iam_role_arn(iam_role_name) is None:
-        return False
-    return True
+    return get_iam_role_arn(iam_role_name) is not None
 
 
 def create_iam_role_for_lambda(iam_role_name):

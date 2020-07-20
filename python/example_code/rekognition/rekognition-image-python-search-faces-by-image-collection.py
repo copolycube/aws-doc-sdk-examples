@@ -39,17 +39,17 @@ if __name__ == "__main__":
 
     client=boto3.client('rekognition')
 
-  
+
     response=client.search_faces_by_image(CollectionId=collectionId,
                                 Image={'S3Object':{'Bucket':bucket,'Name':fileName}},
                                 FaceMatchThreshold=threshold,
                                 MaxFaces=maxFaces)
 
-                                
+
     faceMatches=response['FaceMatches']
     print ('Matching faces')
+    print
     for match in faceMatches:
-            print ('FaceId:' + match['Face']['FaceId'])
-            print ('Similarity: ' + "{:.2f}".format(match['Similarity']) + "%")
-            print
+        print ('FaceId:' + match['Face']['FaceId'])
+        print ('Similarity: ' + "{:.2f}".format(match['Similarity']) + "%")
 # snippet-end:[rekognition.python.rekognition-image-python-search-faces-by-image-collection.complete]
